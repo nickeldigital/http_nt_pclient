@@ -166,7 +166,7 @@ async def main():
         print(f"Exception when calling TwapApi->twap_strategies: {e}\n")
 
     params = http_nt_pclient.TwapParameters(
-        instrument=exchange,
+        instrument='BTCUSDT@BINANCE_FUTURES_USDT',
         account=account_id,
         side='BUY',
         target=0.1,
@@ -198,15 +198,29 @@ async def main():
         http_nt_pclient.TwapParametersWithId(
             execution_id='excID2',
             parameters=http_nt_pclient.TwapParameters(
-                instrument=exchange,
+                instrument='BTCUSDT@BINANCE_FUTURES_USDT',
                 account=account_id,
                 side='SELL',
                 target=0.1,
-                guaranteed_execution='NO',
+                guaranteed_execution='YES',
                 scheduled_start_time=datetime.datetime.now(tz=datetime.timezone.utc) + datetime.timedelta(minutes=60),
                 aggression_cap=1,
                 aggression_floor=0,
                 step_size=0.01,
+                step_time=1
+            )),
+        http_nt_pclient.TwapParametersWithId(
+            execution_id='excID3',
+            parameters=http_nt_pclient.TwapParameters(
+                instrument='ETHUSDT@BINANCE_FUTURES_USDT',
+                account=account_id,
+                side='BUY',
+                target=50,
+                guaranteed_execution='YES',
+                scheduled_start_time=datetime.datetime.now(tz=datetime.timezone.utc) + datetime.timedelta(minutes=60),
+                aggression_cap=1,
+                aggression_floor=0,
+                step_size=0.1,
                 step_time=1
             ))
     ])
@@ -222,6 +236,12 @@ async def main():
             execution_id='excID2',
             parameters_to_update=[
                 http_nt_pclient.TwapUpdateParameters(limit_price=100000)
+            ]
+        ),
+        http_nt_pclient.TwapUpdateParametersWithId(
+            execution_id='excID3',
+            parameters_to_update=[
+                http_nt_pclient.TwapUpdateParameters(limit_price=1800)
             ]
         )
     ])
